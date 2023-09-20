@@ -20,7 +20,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
 
-app.get('/projects', async (req: Request, res: Response) => {
+app.get('/get_projects', async (req: Request, res: Response) => {
     /*
     try {
         const users = await db.any('SELECT * FROM projects');
@@ -39,7 +39,7 @@ app.get('/projects', async (req: Request, res: Response) => {
         });
 });
 
-app.get('/projects/:id', async (req: Request, res: Response) => {
+app.get('/get_projects/:id', async (req: Request, res: Response) => {
     const id = req.params.id;
 
     db.any(`SELECT * FROM projects WHERE id = ${id}`)
@@ -52,9 +52,32 @@ app.get('/projects/:id', async (req: Request, res: Response) => {
         });
 });
 
+app.post('/set_new_project', async (req: Request, res: Response) => {
+    const { name, description, s_key } = req.body;
 
+    db.any(`INSERT INTO projects (name, description, s_key) VALUES ('${name}', '${description}', '${s_key}')`)
+        .then((data) => {
+            res.json(data);
+        }
+        )
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
 
+app.post('/delet_project', async (req: Request, res: Response) => {
+    const { id, s_key } = req.body;
 
+    db.any(`DELETE FROM projects WHERE id = ${id} AND s_key = '${s_key}'`)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
