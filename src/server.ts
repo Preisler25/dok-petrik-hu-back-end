@@ -66,7 +66,7 @@ app.post('/set_new_project', async (req: Request, res: Response) => {
         });
 });
 
-app.delete('/delet_project', async (req: Request, res: Response) => {
+app.delete('/delete_project', async (req: Request, res: Response) => {
     const { id, s_key } = req.body;
 
     db.any(`DELETE FROM projects WHERE id = ${id} AND s_key = '${s_key}'`)
