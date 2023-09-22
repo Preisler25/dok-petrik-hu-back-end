@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import db from './db_config';
 
+import Project from './models/project';
+
 dotenv.config();
 
 const app: Express = express();
