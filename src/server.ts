@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import db from './db_config';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -11,6 +12,9 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
+
+//region cors
+app.use(cors({ origin: '*' }))
 
 app.use(express.static('public'));
 
