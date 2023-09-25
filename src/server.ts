@@ -3,8 +3,6 @@ import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import db from './db_config';
 
-import Project from './models/project';
-
 dotenv.config();
 
 const app: Express = express();
@@ -21,7 +19,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
 
-// section Projects
+//region projects
 
 app.get('/get_projects', async (req: Request, res: Response) => {
     db.any('SELECT id FROM projects')
@@ -63,9 +61,6 @@ app.post('/set_new_project', async (req: Request, res: Response) => {
 
 app.delete('/delet_project', async (req: Request, res: Response) => {
     const { id, s_key } = req.body;
-    console.log('====================================');
-    console.log(id, s_key);
-    console.log('====================================');
     db.any(`DELETE FROM projects WHERE id = ${id} AND s_key = '${s_key}'`)
         .then((data) => {
             res.json(data);
@@ -76,18 +71,21 @@ app.delete('/delet_project', async (req: Request, res: Response) => {
         });
 });
 
-//section end
+//endregion
 
-//section tipps
+//region tipps
 
-/*type Tipps = {
-    name: string;
-    cls: string;
-    prof_link: string;
-    msg: string;
-};
+app.get('/get_tipps', async (req: Request, res: Response) => {
+    db.any('SELECT * FROM tipps')
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
 
-export default Tipps;*/
 app.post('/set_new_tipp', async (req: Request, res: Response) => {
     const { name, cls, prof_link, msg } = req.body;
 
@@ -103,8 +101,10 @@ app.post('/set_new_tipp', async (req: Request, res: Response) => {
 }
 );
 
-app.get('/get_tipps', async (req: Request, res: Response) => {
-    db.any('SELECT * FROM tipps')
+app.delete('/delet_tipp', async (req: Request, res: Response) => {
+    const { id } = req.body;
+
+    db.any(`DELETE FROM tipps WHERE id = ${id}`)
         .then((data) => {
             res.json(data);
         })
@@ -114,8 +114,7 @@ app.get('/get_tipps', async (req: Request, res: Response) => {
         });
 });
 
-//end section
-
+//endregion
 
 
 app.listen(port, () => {
