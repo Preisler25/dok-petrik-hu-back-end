@@ -91,6 +91,7 @@ app.get('/get_tipps', async (req: Request, res: Response) => {
 });
 
 app.post('/set_new_tipp', async (req: Request, res: Response) => {
+    console.log(req.body);
     const { name, cls, prof_link, msg } = req.body;
 
     db.any(`INSERT INTO tipps (name, cls, prof_link, msg) VALUES ('${name}', '${cls}', '${prof_link}', '${msg}')`)
