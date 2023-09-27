@@ -50,17 +50,31 @@ app.get('/get_projects/:id', async (req: Request, res: Response) => {
 });
 
 app.post('/set_new_project', async (req: Request, res: Response) => {
-    const { name, description, s_key } = req.body;
+    const body = req.body;
 
-    db.any(`INSERT INTO projects (name, description, s_key) VALUES ('${name}', '${description}', '${s_key}')`)
-        .then((data) => {
-            res.json(data);
-        }
-        )
-        .catch((error) => {
-            console.error('Error:', error);
-            res.status(500).json({ error: 'An error occurred' });
-        });
+    console.log(body);
+
+    if (body.time != null) {
+        db.any(`INSERT INTO projects (name, description, s_key, created_at) VALUES ('${body.name}', '${body.description}', '${body.s_key}', '${body.time}')`)
+            .then((data) => {
+                res.json(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                res.status(500).json({ error: 'An error occurred' });
+            });
+    }
+    else {
+        db.any(`INSERT INTO projects (name, description, s_key) VALUES ('${body.name}', '${body.description}', '${body.s_key}')`)
+            .then((data) => {
+                res.json(data);
+            }
+            )
+            .catch((error) => {
+                console.error('Error:', error);
+                res.status(500).json({ error: 'An error occurred' });
+            });
+    }
 });
 
 app.delete('/delet_project', async (req: Request, res: Response) => {
