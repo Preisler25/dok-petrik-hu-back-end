@@ -84,7 +84,7 @@ app.delete('/delet_project', async (req: Request, res: Response) => {
             res.json(data);
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('Error: ', error);
             res.status(500).json({ error: 'An error occurred' });
         });
 });
