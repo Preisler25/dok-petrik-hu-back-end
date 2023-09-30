@@ -14,3 +14,9 @@ create table if not exists tipps(
     prof_link varchar(255) not null,
     msg text,
 );
+
+create table if not exists gyulesek(
+    id serial primary key,
+    desc text,
+    gy_date date not null,
+);
