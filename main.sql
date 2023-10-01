@@ -7,7 +7,7 @@ create table if not exists projects (
     finished_at timestamp default null
 );
 
-create table if not exists tipps(
+create table if not exists tipps (
     id serial primary key,
     name varchar(255) not null,
     cls varchar(7) not null,
@@ -15,8 +15,8 @@ create table if not exists tipps(
     msg text,
 );
 
-create table if not exists gyulesek(
+create table if not exists gyulesek (
     id serial primary key,
-    desc text,
-    gy_date date not null,
+    l_txt text,
+    gy_date date not null
 );
