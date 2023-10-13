@@ -135,6 +135,56 @@ app.delete('/delet_tipp', async (req: Request, res: Response) => {
 
 //endregion
 
+//gyules region
+app.get('/get_gyules', async (req: Request, res: Response) => {
+    db.any('SELECT * FROM gyulesek')
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
+
+app.get('/next_gyules', async (req: Request, res: Response) => {
+    db.any('SELECT * FROM gyulesek WHERE gy_date >= NOW() ORDER BY gy_date ASC LIMIT 1')
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((error) => {
+            console.error('Error: ', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
+
+app.post('/set_new_gyules', async (req: Request, res: Response) => {
+
+    const { l_txt, gy_date, gy_hely } = req.body;
+
+    try {
+        await db.none('INSERT INTO gyulesek (l_txt, gy_date, gy_hely) VALUES ($1, $2, $3)', [l_txt, gy_date, gy_hely]);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+});
+
+app.delete('/delet_gyules', async (req: Request, res: Response) => {
+    const { id } = req.body;
+
+    db.any(`DELETE FROM gyulesek WHERE id = ${id}`)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+});
+//end region
+
 
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
